@@ -114,8 +114,8 @@ async function lookupColaborador(
       role:roles!inner (
         nome,
         permissions:role_permissions!inner (
-          permission:permissions!inner (
-            codigo
+            permission:permissions!inner (
+            nome
           )
         )
       )
@@ -125,7 +125,7 @@ async function lookupColaborador(
   const roles = [
     ...new Set(
       ((rolesData ?? []) as unknown as {
-        role: { nome: string; permissions: { permission: { codigo: string } }[] }
+        role: { nome: string; permissions: { permission: { nome: string } }[] }
       }[]).map((r) => r.role.nome),
     ),
   ]
@@ -133,9 +133,9 @@ async function lookupColaborador(
   const permissions = [
     ...new Set(
       ((rolesData ?? []) as unknown as {
-        role: { permissions: { permission: { codigo: string } }[] }
+        role: { permissions: { permission: { nome: string } }[] }
       }[]).flatMap((r) =>
-        r.role.permissions.map((p) => p.permission.codigo),
+        r.role.permissions.map((p) => p.permission.nome),
       ),
     ),
   ]

@@ -12,11 +12,26 @@ export interface Departamento {
 
 export interface CreateDepartamentoInput {
   nome: string
-  descricao?: string
+  descricao?: string | null
 }
 
 export interface UpdateDepartamentoInput {
   nome?: string
-  descricao?: string
+  descricao?: string | null
   isActive?: boolean
+}
+
+export interface DepartamentoListParams {
+  search?: string
+  page: number
+  pageSize: number
+  sortBy: string
+  sortOrder: 'asc' | 'desc'
+  showInactive?: boolean
+  showDeleted?: boolean
+}
+
+export interface DepartamentoListResult {
+  data: Departamento[]
+  total: number
 }

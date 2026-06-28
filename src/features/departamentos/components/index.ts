@@ -1,2 +1,2 @@
-// Placeholder — Departamento components will be defined here
-export {}
+export { DepartamentoTable } from './departamento-table'
+export { DepartamentoForm } from './departamento-form'
