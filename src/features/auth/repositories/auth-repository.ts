@@ -83,9 +83,9 @@ async function lookupColaborador(
       cargo_id,
       unidade_id,
       data_admissao,
-      departamentos!colaboradores_departamento_id_fkey ( nome ),
-      cargos!colaboradores_cargo_id_fkey ( nome ),
-      unidades!colaboradores_unidade_id_fkey ( nome )
+      departamentos!fk_colaboradores_departamento ( nome ),
+      cargos!fk_colaboradores_cargo ( nome ),
+      unidades!fk_colaboradores_unidade ( nome )
     `)
     .eq('auth_user_id', authUserId)
     .is('deleted_at', null)

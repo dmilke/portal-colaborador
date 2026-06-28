@@ -27,7 +27,7 @@ const navigation = [
   {
     group: 'Principal',
     items: [
-      { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+      { title: 'Dashboard', href: '/', icon: LayoutDashboard },
     ],
   },
   {
@@ -96,7 +96,7 @@ export function Sidebar({ collapsed, onToggle, colaborador }: SidebarProps) {
     >
       <div className="flex h-14 items-center justify-between px-4">
         {!collapsed && (
-          <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
+          <Link href="/" className="flex items-center gap-2 font-semibold">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground text-xs font-bold">
               PC
             </div>
@@ -104,7 +104,7 @@ export function Sidebar({ collapsed, onToggle, colaborador }: SidebarProps) {
           </Link>
         )}
         {collapsed && (
-          <Link href="/dashboard" className="mx-auto">
+          <Link href="/" className="mx-auto">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground text-xs font-bold">
               PC
             </div>

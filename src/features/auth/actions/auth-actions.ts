@@ -36,7 +36,7 @@ export async function loginAction(prevState: LoginState, formData: FormData) {
     return { errors: null, message: error?.message ?? 'Erro ao fazer login' }
   }
 
-  redirect('/dashboard')
+  redirect('/')
 }
 
 export async function logoutAction() {
