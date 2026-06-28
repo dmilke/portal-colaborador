@@ -1,110 +1,59 @@
 # Portal do Colaborador
 
-Sistema para gerenciamento de solicitações de folgas de colaboradores.
+[![CI](https://github.com/dmilke/portal_colaborador/actions/workflows/ci.yml/badge.svg)](https://github.com/dmilke/portal_colaborador/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/dmilke/portal_colaborador/actions/workflows/codeql.yml/badge.svg)](https://github.com/dmilke/portal_colaborador/actions/workflows/codeql.yml)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
----
+> Sistema de gestão de solicitações de folga para colaboradores.
 
-# Objetivo
+## Status
 
-Automatizar o processo de solicitação, aprovação e controle de folgas, proporcionando transparência, rastreabilidade e segurança.
+**Development** — Infrastructure and database schema are finalized. Business logic implementation in progress.
 
----
+## Architecture
 
-# Tecnologias
+| Layer       | Technology                              |
+|-------------|----------------------------------------|
+| Frontend    | Next.js 16 (App Router, Server Components) |
+| Styling     | Tailwind CSS 4                         |
+| Database    | PostgreSQL (Supabase)                  |
+| Auth        | Supabase Auth                          |
+| Migration   | Supabase CLI (local/remote)            |
+| CI/CD       | GitHub Actions                         |
 
-## Frontend
+### Database (24 tables)
 
-* React
-* Next.js
-* TypeScript
-* Tailwind CSS
-* shadcn/ui
+- **RBAC**: roles, permissions, role_permissions, colaborador_roles
+- **Organograma**: departamentos, cargos, turnos, colaboradores
+- **Core**: solicitacoes, folgas
+- **Workflow**: workflow_definitions, workflow_steps, workflow_executions, workflow_step_executions
+- **Communications**: notificacoes, auditoria
+- **Documents**: documentos, documento_versoes, documento_assinaturas
+- **System**: configuracoes, anexos
 
-## Backend
+## Getting Started
 
-* Supabase
-* PostgreSQL
-* Auth
-* Storage
-* Row Level Security (RLS)
-
-## Infraestrutura
-
-* GitHub
-* Vercel
-
----
-
-# Estrutura do Projeto
-
-```text
-docs/
-apps/
-supabase/
-scripts/
-.github/
+```bash
+npm ci
+npm run dev
 ```
 
----
+Open [http://localhost:3000](http://localhost:3000).
 
-# Documentação
+## Development Workflow
 
-Toda a documentação oficial encontra-se na pasta:
+See [docs/DevelopmentWorkflow.md](docs/DevelopmentWorkflow.md).
 
-```text
-/docs
+## Project Structure
+
 ```
-
----
-
-# Fluxo de Desenvolvimento
-
-Documentação
-
-↓
-
-Supabase
-
-↓
-
-Migrações SQL
-
-↓
-
-Autenticação
-
-↓
-
-Frontend
-
-↓
-
-Integração
-
-↓
-
-Testes
-
-↓
-
-Deploy
-
----
-
-# Regras
-
-* Documentação é a fonte oficial da verdade.
-* Alterações estruturais somente por migração SQL.
-* Todo código deverá seguir o padrão definido em `docs/14-padrao-de-codigo.md`.
-
----
-
-# Licença
-
-Definida no arquivo `LICENSE`.
-
----
-
-Versão: 1.0.0
-
-Status: CONGELADO
+├── .github/workflows/     # CI/CD pipelines
+├── src/
+│   ├── app/               # Next.js App Router pages
+│   └── features/          # Feature modules (colaboradores, auth, documentos, etc.)
+├── lib/
+│   └── supabase/          # Supabase clients (server, client, middleware)
+└── supabase/
+    ├── migrations/        # Database migrations
+    └── tests/             # Database validation tests
+```

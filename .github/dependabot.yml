@@ -1,0 +1,49 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: 08:00
+      timezone: America/Sao_Paulo
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      nextjs:
+        patterns:
+          - next
+          - eslint-config-next
+          - @types/react
+          - @types/react-dom
+      supabase:
+        patterns:
+          - supabase
+          - '@supabase/*'
+      tailwind:
+        patterns:
+          - tailwindcss
+          - '@tailwindcss/*'
+      typescript:
+        patterns:
+          - typescript
+          - '@types/*'
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: 08:00
+      timezone: America/Sao_Paulo
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: ci
+      include: scope
+    groups:
+      actions:
+        patterns:
+          - actions/*
+          - github/*
