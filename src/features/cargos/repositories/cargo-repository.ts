@@ -110,7 +110,7 @@ export function createCargoRepository(supabase: SupabaseClient): CargoRepository
         })
         .eq('id', id)
 
-      if (error) throw new Error(`Erro ao excluir cargo: ${error.message} (${error.code})`)
+      if (error) throw new Error('Erro ao excluir cargo')
     },
 
     async restore(id: string, updatedBy: string) {
