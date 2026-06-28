@@ -59,11 +59,19 @@ export function createAuthRepository(supabase: SupabaseClient): AuthRepository {
   }
 }
 
+function extractNome(
+  val: { nome: string }[] | { nome: string } | null,
+): string | null {
+  if (!val) return null
+  if (Array.isArray(val)) return val[0]?.nome ?? null
+  return val.nome
+}
+
 async function lookupColaborador(
   supabase: SupabaseClient,
   authUserId: string,
 ): Promise<ColaboradorSession | null> {
-  const { data: colaborador } = await supabase
+  const { data: raw, error } = await supabase
     .from('colaboradores')
     .select(`
       id,
@@ -73,55 +81,79 @@ async function lookupColaborador(
       avatar_url,
       departamento_id,
       cargo_id,
-      unidade_id
+      unidade_id,
+      data_admissao,
+      departamentos!colaboradores_departamento_id_fkey ( nome ),
+      cargos!colaboradores_cargo_id_fkey ( nome ),
+      unidades!colaboradores_unidade_id_fkey ( nome )
     `)
     .eq('auth_user_id', authUserId)
     .is('deleted_at', null)
     .single()
 
-  if (!colaborador) return null
+  if (error || !raw) return null
+
+  const data = raw as unknown as {
+    id: string
+    auth_user_id: string | null
+    nome: string
+    email: string | null
+    avatar_url: string | null
+    departamento_id: string | null
+    cargo_id: string | null
+    unidade_id: string | null
+    data_admissao: string | null
+    departamentos: { nome: string }[] | { nome: string } | null
+    cargos: { nome: string }[] | { nome: string } | null
+    unidades: { nome: string }[] | { nome: string } | null
+  }
 
   const { data: rolesData } = await supabase
     .from('colaborador_roles')
     .select(`
-      role:roles (
+      role:roles!inner (
         nome,
-        permissions:role_permissions (
-          permission:permissions (
+        permissions:role_permissions!inner (
+          permission:permissions!inner (
             codigo
           )
         )
       )
     `)
-    .eq('colaborador_id', colaborador.id)
+    .eq('colaborador_id', data.id)
 
-  const roles = (rolesData ?? []).map((r: unknown) => {
-    const row = r as {
-      role: { nome: string; permissions: { permission: { codigo: string } }[] }
-    }
-    return row.role.nome
-  })
+  const roles = [
+    ...new Set(
+      ((rolesData ?? []) as unknown as {
+        role: { nome: string; permissions: { permission: { codigo: string } }[] }
+      }[]).map((r) => r.role.nome),
+    ),
+  ]
 
-  const permissions = (rolesData ?? []).flatMap((r: unknown) => {
-    const row = r as {
-      role: { permissions: { permission: { codigo: string } }[] }
-    }
-    return row.role.permissions.map((p) => p.permission.codigo)
-  })
+  const permissions = [
+    ...new Set(
+      ((rolesData ?? []) as unknown as {
+        role: { permissions: { permission: { codigo: string } }[] }
+      }[]).flatMap((r) =>
+        r.role.permissions.map((p) => p.permission.codigo),
+      ),
+    ),
+  ]
 
   return {
-    id: colaborador.id,
-    authUserId: colaborador.auth_user_id!,
-    nome: colaborador.nome,
-    email: colaborador.email,
-    avatarUrl: colaborador.avatar_url ?? null,
-    departamentoId: colaborador.departamento_id,
-    departamentoNome: null,
-    cargoId: colaborador.cargo_id,
-    cargoNome: null,
-    unidadeId: colaborador.unidade_id,
-    unidadeNome: null,
-    roles: [...new Set(roles)],
-    permissions: [...new Set(permissions)],
+    id: data.id,
+    authUserId: data.auth_user_id!,
+    nome: data.nome,
+    email: data.email,
+    avatarUrl: data.avatar_url ?? null,
+    departamentoId: data.departamento_id,
+    departamentoNome: extractNome(data.departamentos),
+    cargoId: data.cargo_id,
+    cargoNome: extractNome(data.cargos),
+    unidadeId: data.unidade_id,
+    unidadeNome: extractNome(data.unidades),
+    dataAdmissao: data.data_admissao ?? null,
+    roles,
+    permissions,
   }
 }

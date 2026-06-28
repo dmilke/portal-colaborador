@@ -24,6 +24,7 @@ export interface ColaboradorSession {
   cargoNome: string | null
   unidadeId: string | null
   unidadeNome: string | null
+  dataAdmissao: string | null
   roles: string[]
   permissions: string[]
 }

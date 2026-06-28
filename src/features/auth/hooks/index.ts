@@ -1,2 +1,1 @@
-// Placeholder — Auth hooks will be defined here
-export {}
+export { useAuth } from './use-auth'
