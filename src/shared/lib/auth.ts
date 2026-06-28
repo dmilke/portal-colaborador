@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAuthRepository } from '@/src/features/auth/repositories/auth-repository'
 import { createAuthService } from '@/src/features/auth/services/auth-service'
 import type { ColaboradorSession } from '@/src/features/auth/types'
+import type { User } from '@supabase/supabase-js'
 
 export const verifySession = cache(async () => {
   const supabase = await createClient()
@@ -15,10 +16,7 @@ export const verifySession = cache(async () => {
     redirect('/login')
   }
 
-  return {
-    userId: user.id,
-    email: user.email ?? '',
-  }
+  return user as User
 })
 
 export const getCurrentColaborador = cache(async (): Promise<ColaboradorSession | null> => {
