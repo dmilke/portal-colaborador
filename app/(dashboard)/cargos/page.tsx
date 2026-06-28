@@ -1,3 +1,24 @@
-export default function CargosPage() {
-  return <div>Cargos</div>
+import { Suspense } from 'react'
+import { createClient } from '@/lib/supabase/server'
+import { getCurrentColaborador } from '@/src/shared/lib/auth'
+import { createCargoRepository } from '@/src/features/cargos/repositories/cargo-repository'
+import { createCargoService } from '@/src/features/cargos/services/cargo-service'
+import { AdminPageLayout, AdminListSkeleton } from '@/src/shared/components/admin'
+import { CargosPageContent } from './components/cargos-page-content'
+
+export default async function CargosPage() {
+  const colaborador = await getCurrentColaborador()
+  const supabase = await createClient()
+  const repository = createCargoRepository(supabase)
+  const service = createCargoService(repository)
+  const cargos = await service.list()
+  const permissions = colaborador?.permissions ?? []
+
+  return (
+    <AdminPageLayout title="Cargos" description="Gerencie os cargos da organização">
+      <Suspense fallback={<AdminListSkeleton />}>
+        <CargosPageContent initialData={cargos} permissions={permissions} />
+      </Suspense>
+    </AdminPageLayout>
+  )
 }

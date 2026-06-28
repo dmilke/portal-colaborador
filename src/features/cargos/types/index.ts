@@ -12,11 +12,11 @@ export interface Cargo {
 
 export interface CreateCargoInput {
   nome: string
-  descricao?: string
+  descricao?: string | null
 }
 
 export interface UpdateCargoInput {
   nome?: string
-  descricao?: string
+  descricao?: string | null
   isActive?: boolean
 }
