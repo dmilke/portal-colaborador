@@ -3,8 +3,8 @@ import { createClient } from '@/lib/supabase/server'
 import { getCurrentColaborador } from '@/src/shared/lib/auth'
 import { createDepartamentoRepository } from '@/src/features/departamentos/repositories/departamento-repository'
 import { createDepartamentoService } from '@/src/features/departamentos/services/departamento-service'
+import { AdminPageLayout, AdminListSkeleton } from '@/src/shared/components/admin'
 import { DepartamentoPageContent } from './components/departamento-page-content'
-import { Skeleton } from '@/components/ui/skeleton'
 
 export default async function DepartamentosPage() {
   const colaborador = await getCurrentColaborador()
@@ -15,22 +15,13 @@ export default async function DepartamentosPage() {
   const permissions = colaborador?.permissions ?? []
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Departamentos</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Gerencie os departamentos da organização
-          </p>
-        </div>
-      </div>
-
-      <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+    <AdminPageLayout title="Departamentos" description="Gerencie os departamentos da organização">
+      <Suspense fallback={<AdminListSkeleton />}>
         <DepartamentoPageContent
           initialData={departamentos}
           permissions={permissions}
         />
       </Suspense>
-    </div>
+    </AdminPageLayout>
   )
 }

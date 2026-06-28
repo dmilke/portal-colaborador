@@ -3,18 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { DataTable, type Column } from '@/src/shared/components/data-table'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
+import { AdminStatusBadge, AdminConfirmDialog, AdminActionButtons } from '@/src/shared/components/admin'
 import { toast } from 'sonner'
 import {
   deleteDepartamentoAction,
@@ -22,7 +11,6 @@ import {
   toggleActiveDepartamentoAction,
 } from '../actions/departamento-actions'
 import type { Departamento } from '../types'
-import { Pencil, Trash2, RotateCcw, ToggleLeft, ToggleRight } from 'lucide-react'
 
 interface DepartamentoTableProps {
   data: Departamento[]
@@ -66,12 +54,14 @@ export function DepartamentoTable({ data, permissions, showDeleted, onDataChange
     }
   }
 
-  async function handleToggleActive(id: string, currentActive: boolean) {
+  async function handleToggleActive(id: string) {
     setLoading(id)
-    const result = await toggleActiveDepartamentoAction(id, !currentActive)
+    const item = data.find((d) => d.id === id)
+    if (!item) return
+    const result = await toggleActiveDepartamentoAction(id, !item.isActive)
     setLoading(null)
     if (result.success) {
-      toast.success(currentActive ? 'Departamento desativado' : 'Departamento ativado')
+      toast.success(item.isActive ? 'Departamento desativado' : 'Departamento ativado')
       onDataChange()
       router.refresh()
     } else {
@@ -104,12 +94,9 @@ export function DepartamentoTable({ data, permissions, showDeleted, onDataChange
       key: 'isActive',
       header: 'Status',
       className: 'w-28',
-      render: (item) => {
-        if (item.deletedAt) return <Badge variant="destructive">Excluído</Badge>
-        return item.isActive
-          ? <Badge variant="default" className="bg-emerald-600">Ativo</Badge>
-          : <Badge variant="secondary">Inativo</Badge>
-      },
+      render: (item) => (
+        <AdminStatusBadge isActive={item.isActive} deletedAt={item.deletedAt} />
+      ),
     },
     {
       key: 'createdAt',
@@ -127,67 +114,20 @@ export function DepartamentoTable({ data, permissions, showDeleted, onDataChange
       header: 'Ações',
       className: 'w-44 text-right',
       cellClassName: 'text-right',
-      render: (item) => {
-        const isItemLoading = loading === item.id
-
-        if (item.deletedAt) {
-          return canDelete ? (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={(e) => { e.stopPropagation(); handleRestore(item.id) }}
-              disabled={isItemLoading}
-            >
-              <RotateCcw className="h-4 w-4 mr-1" />
-              Restaurar
-            </Button>
-          ) : null
-        }
-
-        return (
-          <div className="flex items-center justify-end gap-1">
-            {canUpdate && (
-              <>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleToggleActive(item.id, item.isActive)
-                  }}
-                  disabled={isItemLoading}
-                  title={item.isActive ? 'Desativar' : 'Ativar'}
-                >
-                  {item.isActive
-                    ? <ToggleRight className="h-4 w-4 text-emerald-600" />
-                    : <ToggleLeft className="h-4 w-4 text-muted-foreground" />
-                  }
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    router.push(`/departamentos/${item.id}`)
-                  }}
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
-              </>
-            )}
-            {canDelete && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => { e.stopPropagation(); setDeleteId(item.id) }}
-                disabled={isItemLoading}
-              >
-                <Trash2 className="h-4 w-4 text-red-500" />
-              </Button>
-            )}
-          </div>
-        )
-      },
+      render: (item) => (
+        <AdminActionButtons
+          entityId={item.id}
+          isActive={item.isActive}
+          deletedAt={item.deletedAt}
+          canUpdate={canUpdate}
+          canDelete={canDelete}
+          onToggleActive={handleToggleActive}
+          onEdit={(id) => router.push(`/departamentos/${id}`)}
+          onDelete={setDeleteId}
+          onRestore={handleRestore}
+          isLoading={loading === item.id}
+        />
+      ),
     },
   ]
 
@@ -202,25 +142,15 @@ export function DepartamentoTable({ data, permissions, showDeleted, onDataChange
         emptyMessage={showDeleted ? 'Nenhum departamento encontrado' : 'Nenhum departamento ativo encontrado'}
       />
 
-      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Excluir departamento</AlertDialogTitle>
-            <AlertDialogDescription>
-              Esta ação move o departamento para a lixeira. É possível restaurá-lo depois.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => deleteId && handleDelete(deleteId)}
-              className="bg-red-600 hover:bg-red-700"
-            >
-              Excluir
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <AdminConfirmDialog
+        open={!!deleteId}
+        onOpenChange={(open) => !open && setDeleteId(null)}
+        title="Excluir departamento"
+        description="Esta ação move o departamento para a lixeira. É possível restaurá-lo depois."
+        confirmLabel="Excluir"
+        confirmVariant="destructive"
+        onConfirm={() => deleteId && handleDelete(deleteId)}
+      />
     </>
   )
 }

@@ -1,11 +1,9 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { AdminToolbar } from '@/src/shared/components/admin'
 import { DepartamentoTable } from '@/src/features/departamentos/components/departamento-table'
-import { Plus } from 'lucide-react'
 import type { Departamento } from '@/src/features/departamentos/types'
 
 interface DepartamentoPageContentProps {
@@ -13,15 +11,17 @@ interface DepartamentoPageContentProps {
   permissions: string[]
 }
 
+const tabs = [
+  { value: 'active', label: 'Ativos' },
+  { value: 'inactive', label: 'Inativos' },
+  { value: 'all', label: 'Todos' },
+]
+
 export function DepartamentoPageContent({ initialData, permissions }: DepartamentoPageContentProps) {
   const router = useRouter()
   const [tab, setTab] = useState('active')
 
   const canCreate = permissions.includes('departamentos.create')
-
-  const onDataChange = useCallback(() => {
-    router.refresh()
-  }, [router])
 
   const filteredData = tab === 'all'
     ? initialData
@@ -31,28 +31,18 @@ export function DepartamentoPageContent({ initialData, permissions }: Departamen
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <Tabs value={tab} onValueChange={setTab}>
-          <TabsList>
-            <TabsTrigger value="active">Ativos</TabsTrigger>
-            <TabsTrigger value="inactive">Inativos</TabsTrigger>
-            <TabsTrigger value="all">Todos</TabsTrigger>
-          </TabsList>
-        </Tabs>
-
-        {canCreate && (
-          <Button onClick={() => router.push('/departamentos/novo')}>
-            <Plus className="h-4 w-4 mr-2" />
-            Novo Departamento
-          </Button>
-        )}
-      </div>
+      <AdminToolbar
+        tabs={tabs}
+        currentTab={tab}
+        onTabChange={setTab}
+        actionButton={canCreate ? { label: 'Novo Departamento', onClick: () => router.push('/departamentos/novo') } : null}
+      />
 
       <DepartamentoTable
         data={filteredData}
         permissions={permissions}
         showDeleted={tab === 'all'}
-        onDataChange={onDataChange}
+        onDataChange={() => router.refresh()}
       />
     </div>
   )
