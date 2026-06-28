@@ -115,7 +115,7 @@ export function createUnidadeRepository(supabase: SupabaseClient): UnidadeReposi
         })
         .eq('id', id)
 
-      if (error) throw new Error('Erro ao excluir unidade')
+      if (error) throw new Error(`Erro ao excluir unidade: ${error.message} (${error.code})`)
     },
 
     async restore(id: string, updatedBy: string) {
