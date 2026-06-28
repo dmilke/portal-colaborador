@@ -1,32 +1,29 @@
-import { verifySession, getCurrentColaborador } from '@/src/shared/lib/auth'
-import { DashboardContent } from './dashboard-content'
+import { Suspense } from 'react'
+import { StatsCards } from './components/stats-cards'
+import { StatsCardsSkeleton } from './components/stats-cards-skeleton'
+import { RecentActivity } from './components/recent-activity'
+import { RecentActivitySkeleton } from './components/recent-activity-skeleton'
+import { QuickActions } from './components/quick-actions'
 
-export default async function DashboardPage() {
-  const user = await verifySession()
-  const colaborador = await getCurrentColaborador()
-
-  if (!colaborador) {
-    return (
-      <div className="flex items-center justify-center min-h-[50vh]">
-        <div className="text-center space-y-2">
-          <p className="text-lg font-medium">Perfil não encontrado</p>
-          <p className="text-sm text-muted-foreground">
-            Seu usuário não está vinculado a um colaborador. Contate o administrador.
-          </p>
-        </div>
-      </div>
-    )
-  }
-
+export default function DashboardPage() {
   return (
-    <DashboardContent
-      colaborador={colaborador}
-      user={{
-        id: user.id,
-        email: user.email,
-        lastSignInAt: user.last_sign_in_at,
-        createdAt: user.created_at,
-      }}
-    />
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          Visão geral do sistema
+        </p>
+      </div>
+
+      <Suspense fallback={<StatsCardsSkeleton />}>
+        <StatsCards />
+      </Suspense>
+
+      <Suspense fallback={<RecentActivitySkeleton />}>
+        <RecentActivity />
+      </Suspense>
+
+      <QuickActions />
+    </div>
   )
 }
