@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 import { Zap } from 'lucide-react'
 
 const actions = [
@@ -22,9 +22,13 @@ export function QuickActions() {
       <CardContent>
         <div className="flex flex-wrap gap-3">
           {actions.map(({ label, href }) => (
-            <Button key={href} variant="outline" onClick={() => window.location.href = href}>
+            <Link
+              key={href}
+              href={href}
+              className="inline-flex shrink-0 items-center justify-center rounded-lg border border-border bg-background bg-clip-padding px-2.5 h-8 gap-1.5 text-sm font-medium whitespace-nowrap transition-all outline-none select-none hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50"
+            >
               {label}
-            </Button>
+            </Link>
           ))}
         </div>
       </CardContent>

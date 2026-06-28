@@ -31,3 +31,13 @@
 - `@tanstack/react-table` removed (unused dependency)
 - Removed noop `<Suspense>` wrappers from Cargos and Departamentos pages
 - `_headers` unused parameter warning fixed
+
+## v0.2.0-rc2 (2026-06-28)
+
+### Sprint 4 — Unidades Module
+- Unidades CRUD: full create, read, update, soft-delete with RBAC + Zod validation
+- 3 new routes: `/unidades`, `/unidades/novo`, `/unidades/[id]`
+- New feature module: schemas, validators, repository, service, actions (5 Server Actions), components (form + table)
+- Reuses 100% of the admin CRUD platform (DataTable, AdminToolbar, AdminPageLayout, AdminStatusBadge, AdminConfirmDialog, AdminActionButtons)
+- Seed migration 0005: 4 new permissions (`unidades.read/create/update/delete`) assigned to admin role
+- Screenshots in `docs/screenshots/Sprint-04/`
