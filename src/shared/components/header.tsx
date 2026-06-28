@@ -102,22 +102,20 @@ export function Header({ onMenuClick, colaborador }: HeaderProps) {
         </Button>
 
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button variant="ghost" className="h-8 gap-2 px-2">
-              <Avatar className="h-7 w-7">
-                <AvatarFallback className="text-xs bg-primary/10 text-primary">
-                  {initials}
-                </AvatarFallback>
-              </Avatar>
-              <div className="hidden lg:flex flex-col items-start text-left">
-                <span className="text-sm font-medium leading-none">
-                  {colaborador?.nome ?? 'Carregando...'}
-                </span>
-                <span className="text-xs text-muted-foreground leading-none mt-0.5">
-                  {displayRole}
-                </span>
-              </div>
-            </Button>
+          <DropdownMenuTrigger className="flex items-center gap-2 px-2 h-8 rounded-md hover:bg-accent transition-colors cursor-pointer">
+            <Avatar className="h-7 w-7">
+              <AvatarFallback className="text-xs bg-primary/10 text-primary">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
+            <div className="hidden lg:flex flex-col items-start text-left">
+              <span className="text-sm font-medium leading-none">
+                {colaborador?.nome ?? 'Carregando...'}
+              </span>
+              <span className="text-xs text-muted-foreground leading-none mt-0.5">
+                {displayRole}
+              </span>
+            </div>
           </DropdownMenuTrigger>
           <DropdownMenuPortal>
             <DropdownMenuContent align="end" className="w-56">

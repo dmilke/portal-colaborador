@@ -40,9 +40,9 @@ export function useAuth(): UseAuthResult {
             cargo_id,
             unidade_id,
             data_admissao,
-            departamentos!colaboradores_departamento_id_fkey ( nome ),
-            cargos!colaboradores_cargo_id_fkey ( nome ),
-            unidades!colaboradores_unidade_id_fkey ( nome )
+            departamentos!fk_colaboradores_departamento ( nome ),
+            cargos!fk_colaboradores_cargo ( nome ),
+            unidades!fk_colaboradores_unidade ( nome )
           `)
           .eq('auth_user_id', user.id)
           .is('deleted_at', null)
@@ -85,7 +85,7 @@ export function useAuth(): UseAuthResult {
               nome,
               permissions:role_permissions!inner (
                 permission:permissions!inner (
-                  codigo
+                  nome
                 )
               )
             )
@@ -95,7 +95,7 @@ export function useAuth(): UseAuthResult {
         const roles = [
           ...new Set(
             ((rolesData ?? []) as unknown as {
-              role: { nome: string; permissions: { permission: { codigo: string } }[] }
+              role: { nome: string; permissions: { permission: { nome: string } }[] }
             }[]).map((r) => r.role.nome),
           ),
         ]
@@ -103,9 +103,9 @@ export function useAuth(): UseAuthResult {
         const permissions = [
           ...new Set(
             ((rolesData ?? []) as unknown as {
-              role: { permissions: { permission: { codigo: string } }[] }
+              role: { permissions: { permission: { nome: string } }[] }
             }[]).flatMap((r) =>
-              r.role.permissions.map((p) => p.permission.codigo),
+              r.role.permissions.map((p) => p.permission.nome),
             ),
           ),
         ]

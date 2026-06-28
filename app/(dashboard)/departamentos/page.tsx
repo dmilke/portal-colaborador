@@ -1,9 +1,8 @@
-import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentColaborador } from '@/src/shared/lib/auth'
 import { createDepartamentoRepository } from '@/src/features/departamentos/repositories/departamento-repository'
 import { createDepartamentoService } from '@/src/features/departamentos/services/departamento-service'
-import { AdminPageLayout, AdminListSkeleton } from '@/src/shared/components/admin'
+import { AdminPageLayout } from '@/src/shared/components/admin'
 import { DepartamentoPageContent } from './components/departamento-page-content'
 
 export default async function DepartamentosPage() {
@@ -16,12 +15,10 @@ export default async function DepartamentosPage() {
 
   return (
     <AdminPageLayout title="Departamentos" description="Gerencie os departamentos da organização">
-      <Suspense fallback={<AdminListSkeleton />}>
-        <DepartamentoPageContent
-          initialData={departamentos}
-          permissions={permissions}
-        />
-      </Suspense>
+      <DepartamentoPageContent
+        initialData={departamentos}
+        permissions={permissions}
+      />
     </AdminPageLayout>
   )
 }

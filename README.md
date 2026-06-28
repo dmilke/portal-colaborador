@@ -8,7 +8,7 @@
 
 ## Status
 
-**Development** — Infrastructure and database schema are finalized. Business logic implementation in progress.
+**Release Candidate 0.2.0** — Auth (login/logout/session recovery), Application Shell, RBAC, Dashboard with real data, Departamentos CRUD, Cargos CRUD, reusable admin components, RLS recursion fix.
 
 ## Architecture
 

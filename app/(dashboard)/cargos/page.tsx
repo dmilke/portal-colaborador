@@ -1,9 +1,8 @@
-import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentColaborador } from '@/src/shared/lib/auth'
 import { createCargoRepository } from '@/src/features/cargos/repositories/cargo-repository'
 import { createCargoService } from '@/src/features/cargos/services/cargo-service'
-import { AdminPageLayout, AdminListSkeleton } from '@/src/shared/components/admin'
+import { AdminPageLayout } from '@/src/shared/components/admin'
 import { CargosPageContent } from './components/cargos-page-content'
 
 export default async function CargosPage() {
@@ -16,9 +15,7 @@ export default async function CargosPage() {
 
   return (
     <AdminPageLayout title="Cargos" description="Gerencie os cargos da organização">
-      <Suspense fallback={<AdminListSkeleton />}>
-        <CargosPageContent initialData={cargos} permissions={permissions} />
-      </Suspense>
+      <CargosPageContent initialData={cargos} permissions={permissions} />
     </AdminPageLayout>
   )
 }

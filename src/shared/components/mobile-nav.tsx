@@ -30,7 +30,7 @@ const navigation = [
   {
     group: 'Principal',
     items: [
-      { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+      { title: 'Dashboard', href: '/', icon: LayoutDashboard },
     ],
   },
   {
