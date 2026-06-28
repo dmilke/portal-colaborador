@@ -36,38 +36,38 @@ const navigation = [
   {
     group: 'Gestão',
     items: [
-      { title: 'Colaboradores', href: '/dashboard/colaboradores', icon: Users },
-      { title: 'Departamentos', href: '/dashboard/departamentos', icon: Building2 },
-      { title: 'Cargos', href: '/dashboard/cargos', icon: Briefcase },
-      { title: 'Unidades', href: '/dashboard/unidades', icon: Building2 },
+      { title: 'Colaboradores', href: '/colaboradores', icon: Users },
+      { title: 'Departamentos', href: '/departamentos', icon: Building2 },
+      { title: 'Cargos', href: '/cargos', icon: Briefcase },
+      { title: 'Unidades', href: '/unidades', icon: Building2 },
     ],
   },
   {
     group: 'Solicitações',
     items: [
-      { title: 'Solicitações', href: '/dashboard/solicitacoes', icon: ClipboardList },
-      { title: 'Folgas', href: '/dashboard/folgas', icon: Clock },
+      { title: 'Solicitações', href: '/solicitacoes', icon: ClipboardList },
+      { title: 'Folgas', href: '/folgas', icon: Clock },
     ],
   },
   {
     group: 'Comunicação',
     items: [
-      { title: 'Notificações', href: '/dashboard/notificacoes', icon: Bell },
-      { title: 'Comunicados', href: '/dashboard/comunicados', icon: Megaphone },
+      { title: 'Notificações', href: '/notificacoes', icon: Bell },
+      { title: 'Comunicados', href: '/comunicados', icon: Megaphone },
     ],
   },
   {
     group: 'Documentos',
     items: [
-      { title: 'Documentos', href: '/dashboard/documentos', icon: FileText },
+      { title: 'Documentos', href: '/documentos', icon: FileText },
     ],
   },
   {
     group: 'Sistema',
     items: [
-      { title: 'Auditoria', href: '/dashboard/auditoria', icon: FileSpreadsheet },
-      { title: 'Administração', href: '/dashboard/administracao', icon: Shield },
-      { title: 'Perfil', href: '/dashboard/perfil', icon: UserCircle },
+      { title: 'Auditoria', href: '/auditoria', icon: FileSpreadsheet },
+      { title: 'Administração', href: '/administracao', icon: Shield },
+      { title: 'Perfil', href: '/perfil', icon: UserCircle },
     ],
   },
 ]

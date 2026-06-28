@@ -12,15 +12,16 @@ import {
   FileText,
   Bell,
   ClipboardList,
-  Shield,
   ChevronLeft,
   FileSpreadsheet,
   Megaphone,
   UserCircle,
+  Shield,
 } from 'lucide-react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import type { ColaboradorSession } from '@/src/features/auth/types'
 
 const navigation = [
   {
@@ -32,38 +33,38 @@ const navigation = [
   {
     group: 'Gestão',
     items: [
-      { title: 'Colaboradores', href: '/dashboard/colaboradores', icon: Users },
-      { title: 'Departamentos', href: '/dashboard/departamentos', icon: Building2 },
-      { title: 'Cargos', href: '/dashboard/cargos', icon: Briefcase },
-      { title: 'Unidades', href: '/dashboard/unidades', icon: Building2 },
+      { title: 'Colaboradores', href: '/colaboradores', icon: Users },
+      { title: 'Departamentos', href: '/departamentos', icon: Building2 },
+      { title: 'Cargos', href: '/cargos', icon: Briefcase },
+      { title: 'Unidades', href: '/unidades', icon: Building2 },
     ],
   },
   {
     group: 'Solicitações',
     items: [
-      { title: 'Solicitações', href: '/dashboard/solicitacoes', icon: ClipboardList },
-      { title: 'Folgas', href: '/dashboard/folgas', icon: Clock },
+      { title: 'Solicitações', href: '/solicitacoes', icon: ClipboardList },
+      { title: 'Folgas', href: '/folgas', icon: Clock },
     ],
   },
   {
     group: 'Comunicação',
     items: [
-      { title: 'Notificações', href: '/dashboard/notificacoes', icon: Bell },
-      { title: 'Comunicados', href: '/dashboard/comunicados', icon: Megaphone },
+      { title: 'Notificações', href: '/notificacoes', icon: Bell },
+      { title: 'Comunicados', href: '/comunicados', icon: Megaphone },
     ],
   },
   {
     group: 'Documentos',
     items: [
-      { title: 'Documentos', href: '/dashboard/documentos', icon: FileText },
+      { title: 'Documentos', href: '/documentos', icon: FileText },
     ],
   },
   {
     group: 'Sistema',
     items: [
-      { title: 'Auditoria', href: '/dashboard/auditoria', icon: FileSpreadsheet },
-      { title: 'Administração', href: '/dashboard/administracao', icon: Shield },
-      { title: 'Perfil', href: '/dashboard/perfil', icon: UserCircle },
+      { title: 'Auditoria', href: '/auditoria', icon: FileSpreadsheet },
+      { title: 'Administração', href: '/administracao', icon: Shield },
+      { title: 'Perfil', href: '/perfil', icon: UserCircle },
     ],
   },
 ]
@@ -71,10 +72,20 @@ const navigation = [
 interface SidebarProps {
   collapsed?: boolean
   onToggle?: () => void
+  colaborador: ColaboradorSession | null
 }
 
-export function Sidebar({ collapsed, onToggle }: SidebarProps) {
+export function Sidebar({ collapsed, onToggle, colaborador }: SidebarProps) {
   const pathname = usePathname()
+
+  const initials = colaborador
+    ? colaborador.nome
+        .split(' ')
+        .map((n) => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2)
+    : '??'
 
   return (
     <aside
@@ -159,16 +170,20 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
         {!collapsed ? (
           <div className="flex items-center gap-3 rounded-lg px-2 py-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-xs font-medium">
-              AD
+              {initials}
             </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium">Admin</span>
-              <span className="text-xs text-muted-foreground">admin@email.com</span>
+            <div className="flex flex-col min-w-0">
+              <span className="text-sm font-medium truncate">
+                {colaborador?.nome ?? 'Carregando...'}
+              </span>
+              <span className="text-xs text-muted-foreground truncate">
+                {colaborador?.roles[0] ?? ''}
+              </span>
             </div>
           </div>
         ) : (
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-xs font-medium">
-            AD
+            {initials}
           </div>
         )}
       </div>
