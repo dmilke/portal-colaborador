@@ -8,7 +8,7 @@
 
 ## Status
 
-**Release Candidate 0.2.0** — Auth (login/logout/session recovery), Application Shell, RBAC, Dashboard with real data, Departamentos CRUD, Cargos CRUD, Unidades CRUD, reusable admin components, RLS recursion fix.
+**Release Candidate 0.2.0** — Auth (login/logout/session recovery), Application Shell, RBAC, Dashboard with real data, Departamentos CRUD, Cargos CRUD, Unidades CRUD, Colaboradores CRUD with role assignment and auth integration, reusable admin components, RLS recursion fix.
 
 ## Architecture
 

@@ -1,4 +1,4 @@
-export interface Collaborator {
+export interface Colaborador {
   id: string
   authUserId: string | null
   matricula: string | null
@@ -12,9 +12,13 @@ export interface Collaborator {
   genero: string | null
   estadoCivil: string | null
   departamentoId: string | null
+  departamentoNome: string | null
   unidadeId: string | null
+  unidadeNome: string | null
   cargoId: string | null
+  cargoNome: string | null
   isActive: boolean
+  roles: string[]
   createdAt: string
   updatedAt: string
   createdBy: string | null
@@ -22,7 +26,7 @@ export interface Collaborator {
   deletedAt: string | null
 }
 
-export interface CreateCollaboratorInput {
+export interface CreateColaboradorInput {
   nome: string
   dataNascimento?: string
   matricula?: string
@@ -32,12 +36,12 @@ export interface CreateCollaboratorInput {
   dataAdmissao?: string
   genero?: string
   estadoCivil?: string
-  departamentoId: string
-  unidadeId: string
-  cargoId: string
+  departamentoId: string | null
+  unidadeId: string | null
+  cargoId: string | null
 }
 
-export interface UpdateCollaboratorInput {
+export interface UpdateColaboradorInput {
   nome?: string
   dataNascimento?: string
   matricula?: string
@@ -48,8 +52,34 @@ export interface UpdateCollaboratorInput {
   avatarUrl?: string
   genero?: string
   estadoCivil?: string
-  departamentoId?: string
-  unidadeId?: string
-  cargoId?: string
+  departamentoId?: string | null
+  unidadeId?: string | null
+  cargoId?: string | null
   isActive?: boolean
+}
+
+export interface ColaboradorListParams {
+  search?: string
+  departamentoId?: string
+  cargoId?: string
+  unidadeId?: string
+  status?: 'active' | 'inactive' | 'all'
+  page?: number
+  pageSize?: number
+  sortBy?: string
+  sortOrder?: 'asc' | 'desc'
+}
+
+export interface ColaboradorListResult {
+  data: Colaborador[]
+  total: number
+  page: number
+  pageSize: number
+  totalPages: number
+}
+
+export interface RoleAssignment {
+  roleId: string
+  roleNome: string
+  assigned: boolean
 }
