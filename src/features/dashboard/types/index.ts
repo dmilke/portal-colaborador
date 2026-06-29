@@ -5,8 +5,12 @@ export interface DashboardStats {
   totalUnidades: number
   totalTurnos: number
   solicitacoesPendentes: number
+  solicitacoesAprovadasHoje: number
+  solicitacoesReprovadasHoje: number
   comunicadosAtivos: number
   documentosAtivos: number
+  documentosPublicados: number
+  documentosRecentes: number
 }
 
 export interface RecentActivityItem {

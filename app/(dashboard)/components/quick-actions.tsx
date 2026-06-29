@@ -3,10 +3,12 @@ import Link from 'next/link'
 import { Zap } from 'lucide-react'
 
 const actions = [
+  { label: 'Nova Solicitação', href: '/solicitacoes/nova' },
+  { label: 'Novo Comunicado', href: '/comunicados/novo' },
+  { label: 'Novo Documento', href: '/documentos/novo' },
   { label: 'Novo Departamento', href: '/departamentos/novo' },
   { label: 'Novo Cargo', href: '/cargos/novo' },
   { label: 'Nova Unidade', href: '/unidades/novo' },
-  { label: 'Novo Turno', href: '/turnos/novo' },
   { label: 'Novo Colaborador', href: '/colaboradores/novo' },
 ]
 

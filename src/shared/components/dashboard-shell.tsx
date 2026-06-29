@@ -10,9 +10,10 @@ import type { ColaboradorSession } from '@/src/features/auth/types'
 interface DashboardShellProps {
   children: React.ReactNode
   colaborador: ColaboradorSession | null
+  unreadCount?: number
 }
 
-export function DashboardShell({ children, colaborador }: DashboardShellProps) {
+export function DashboardShell({ children, colaborador, unreadCount = 0 }: DashboardShellProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
@@ -35,6 +36,7 @@ export function DashboardShell({ children, colaborador }: DashboardShellProps) {
         <Header
           onMenuClick={() => setMobileNavOpen(true)}
           colaborador={colaborador}
+          unreadCount={unreadCount}
         />
 
         <main className="flex-1 p-4 lg:p-6">

@@ -9,6 +9,7 @@ const labelMap: Record<string, string> = {
   colaboradores: 'Colaboradores',
   departamentos: 'Departamentos',
   cargos: 'Cargos',
+  turnos: 'Turnos',
   unidades: 'Unidades',
   solicitacoes: 'Solicitações',
   folgas: 'Folgas',
@@ -16,6 +17,7 @@ const labelMap: Record<string, string> = {
   comunicados: 'Comunicados',
   documentos: 'Documentos',
   auditoria: 'Auditoria',
+  configuracoes: 'Configurações',
   administracao: 'Administração',
   perfil: 'Perfil',
 }

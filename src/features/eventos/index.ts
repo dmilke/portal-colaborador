@@ -1,0 +1,5 @@
+export * from './types'
+export { eventLogService } from './services/event-log-service'
+export type { EventLogService } from './services/event-log-service'
+export { initializeEventHandlers } from './lib'
+export { dispatch, emit, on, off, getHandlerCount, getRegisteredEvents } from './lib'

@@ -1,6 +1,9 @@
 import type { ColaboradorRepository } from '../repositories/colaborador-repository'
 import type { Colaborador, CreateColaboradorInput, UpdateColaboradorInput, ColaboradorListParams, ColaboradorListResult } from '../types'
 import { validateCPF } from '@/src/shared/lib/cpf'
+import { dispatch, emit, initializeEventHandlers } from '@/src/features/eventos'
+
+initializeEventHandlers()
 
 export interface ColaboradorService {
   list(params?: ColaboradorListParams): Promise<ColaboradorListResult>
@@ -51,7 +54,15 @@ export function createColaboradorService(repository: ColaboradorRepository): Col
 
       if (errors.length > 0) throw new Error(errors.join('. '))
 
-      return repository.create(input, createdBy)
+      const result = await repository.create(input, createdBy)
+
+      await dispatch(emit('user.created', 'colaboradores', {
+        id: result.id,
+        nome: result.nome,
+        email: result.email ?? undefined,
+      }, createdBy))
+
+      return result
     },
 
     async update(id, input, updatedBy) {
@@ -88,6 +99,9 @@ export function createColaboradorService(repository: ColaboradorRepository): Col
 
     async setActive(id, isActive, updatedBy) {
       await repository.setActive(id, isActive, updatedBy)
+
+      const evento = isActive ? 'user.activated' : 'user.deactivated'
+      await dispatch(emit(evento, 'colaboradores', { id }, updatedBy))
     },
 
     async getRoles(colaboradorId) {

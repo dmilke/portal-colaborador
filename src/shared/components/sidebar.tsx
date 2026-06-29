@@ -17,6 +17,9 @@ import {
   Megaphone,
   UserCircle,
   Shield,
+  BarChart3,
+  Zap,
+  Settings,
 } from 'lucide-react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
@@ -27,7 +30,8 @@ const navigation = [
   {
     group: 'Principal',
     items: [
-      { title: 'Dashboard', href: '/', icon: LayoutDashboard },
+      { title: 'Meu Workspace', href: '/', icon: LayoutDashboard },
+      { title: 'Centro de Gestão', href: '/gestao', icon: BarChart3 },
     ],
   },
   {
@@ -36,6 +40,7 @@ const navigation = [
       { title: 'Colaboradores', href: '/colaboradores', icon: Users },
       { title: 'Departamentos', href: '/departamentos', icon: Building2 },
       { title: 'Cargos', href: '/cargos', icon: Briefcase },
+      { title: 'Turnos', href: '/turnos', icon: Clock },
       { title: 'Unidades', href: '/unidades', icon: Building2 },
     ],
   },
@@ -62,7 +67,9 @@ const navigation = [
   {
     group: 'Sistema',
     items: [
+      { title: 'Eventos', href: '/eventos', icon: Zap },
       { title: 'Auditoria', href: '/auditoria', icon: FileSpreadsheet },
+      { title: 'Configurações', href: '/configuracoes', icon: Settings },
       { title: 'Administração', href: '/administracao', icon: Shield },
       { title: 'Perfil', href: '/perfil', icon: UserCircle },
     ],

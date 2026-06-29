@@ -12,6 +12,7 @@ export type AcaoTipo =
 export interface Auditoria {
   id: string
   colaboradorId: string | null
+  colaboradorNome?: string | null
   acao: AcaoTipo
   entidadeTipo: string
   entidadeId: string | null
@@ -30,4 +31,5 @@ export interface AuditoriaFiltros {
   colaboradorId?: string
   acao?: string
   entidadeTipo?: string
+  entidadeId?: string
 }

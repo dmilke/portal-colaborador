@@ -35,9 +35,10 @@ import type { ColaboradorSession } from '@/src/features/auth/types'
 interface HeaderProps {
   onMenuClick: () => void
   colaborador: ColaboradorSession | null
+  unreadCount?: number
 }
 
-export function Header({ onMenuClick, colaborador }: HeaderProps) {
+export function Header({ onMenuClick, colaborador, unreadCount = 0 }: HeaderProps) {
   const { theme, setTheme } = useTheme()
 
   const initials = colaborador
@@ -94,11 +95,14 @@ export function Header({ onMenuClick, colaborador }: HeaderProps) {
           variant="ghost"
           size="icon"
           className="h-8 w-8 relative"
+          onClick={() => window.location.href = '/notificacoes'}
         >
           <Bell className="h-4 w-4" />
-          <Badge className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px] font-medium">
-            3
-          </Badge>
+          {unreadCount > 0 && (
+            <Badge className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px] font-medium">
+              {unreadCount > 99 ? '99+' : unreadCount}
+            </Badge>
+          )}
         </Button>
 
         <DropdownMenu>

@@ -23,3 +23,11 @@ export interface CreateNotificacaoInput {
   tipo?: string
   payload?: Record<string, unknown>
 }
+
+export interface NotificacaoListResult {
+  data: Notificacao[]
+  total: number
+  page: number
+  pageSize: number
+  totalPages: number
+}

@@ -9,6 +9,17 @@ export interface DashboardRepository {
 export function createDashboardRepository(supabase: SupabaseClient): DashboardRepository {
   return {
     async getStats() {
+      const todayStart = new Date()
+      todayStart.setHours(0, 0, 0, 0)
+      const todayEnd = new Date()
+      todayEnd.setHours(23, 59, 59, 999)
+
+      const todayStartISO = todayStart.toISOString()
+      const todayEndISO = todayEnd.toISOString()
+
+      const sevenDaysAgo = new Date()
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+
       const [
         { count: totalColaboradores },
         { count: totalDepartamentos },
@@ -16,8 +27,12 @@ export function createDashboardRepository(supabase: SupabaseClient): DashboardRe
         { count: totalUnidades },
         { count: totalTurnos },
         { count: solicitacoesPendentes },
+        { count: solicitacoesAprovadasHoje },
+        { count: solicitacoesReprovadasHoje },
         { count: comunicadosAtivos },
         { count: documentosAtivos },
+        { count: documentosPublicados },
+        { count: documentosRecentes },
       ] = await Promise.all([
         supabase.from('colaboradores').select('*', { count: 'exact', head: true }).is('deleted_at', null),
         supabase.from('departamentos').select('*', { count: 'exact', head: true }).is('deleted_at', null),
@@ -25,6 +40,18 @@ export function createDashboardRepository(supabase: SupabaseClient): DashboardRe
         supabase.from('unidades').select('*', { count: 'exact', head: true }).is('deleted_at', null),
         supabase.from('turnos').select('*', { count: 'exact', head: true }).is('deleted_at', null),
         supabase.from('solicitacoes').select('*', { count: 'exact', head: true }).eq('status', 'pendente'),
+        supabase
+          .from('solicitacoes')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'aprovada')
+          .gte('created_at', todayStartISO)
+          .lte('created_at', todayEndISO),
+        supabase
+          .from('solicitacoes')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'reprovada')
+          .gte('created_at', todayStartISO)
+          .lte('created_at', todayEndISO),
         supabase
           .from('comunicados')
           .select('*', { count: 'exact', head: true })
@@ -35,6 +62,16 @@ export function createDashboardRepository(supabase: SupabaseClient): DashboardRe
           .select('*', { count: 'exact', head: true })
           .eq('is_active', true)
           .is('deleted_at', null),
+        supabase
+          .from('documentos')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'publicado')
+          .is('deleted_at', null),
+        supabase
+          .from('documentos')
+          .select('*', { count: 'exact', head: true })
+          .is('deleted_at', null)
+          .gte('created_at', sevenDaysAgo.toISOString()),
       ])
 
       return {
@@ -44,8 +81,12 @@ export function createDashboardRepository(supabase: SupabaseClient): DashboardRe
         totalUnidades: totalUnidades ?? 0,
         totalTurnos: totalTurnos ?? 0,
         solicitacoesPendentes: solicitacoesPendentes ?? 0,
+        solicitacoesAprovadasHoje: solicitacoesAprovadasHoje ?? 0,
+        solicitacoesReprovadasHoje: solicitacoesReprovadasHoje ?? 0,
         comunicadosAtivos: comunicadosAtivos ?? 0,
         documentosAtivos: documentosAtivos ?? 0,
+        documentosPublicados: documentosPublicados ?? 0,
+        documentosRecentes: documentosRecentes ?? 0,
       }
     },
 

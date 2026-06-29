@@ -23,6 +23,7 @@ import {
   FileSpreadsheet,
   Megaphone,
   UserCircle,
+  Settings,
   X,
 } from 'lucide-react'
 
@@ -39,6 +40,7 @@ const navigation = [
       { title: 'Colaboradores', href: '/colaboradores', icon: Users },
       { title: 'Departamentos', href: '/departamentos', icon: Building2 },
       { title: 'Cargos', href: '/cargos', icon: Briefcase },
+      { title: 'Turnos', href: '/turnos', icon: Clock },
       { title: 'Unidades', href: '/unidades', icon: Building2 },
     ],
   },
@@ -66,6 +68,7 @@ const navigation = [
     group: 'Sistema',
     items: [
       { title: 'Auditoria', href: '/auditoria', icon: FileSpreadsheet },
+      { title: 'Configurações', href: '/configuracoes', icon: Settings },
       { title: 'Administração', href: '/administracao', icon: Shield },
       { title: 'Perfil', href: '/perfil', icon: UserCircle },
     ],

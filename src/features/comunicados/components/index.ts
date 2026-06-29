@@ -1,0 +1,5 @@
+export { ComunicadoForm } from './comunicado-form'
+export { ComunicadoTable } from './comunicado-table'
+export { ComunicadoDetail } from './comunicado-detail'
+export { ComunicadoPriorityBadge } from './comunicado-priority-badge'
+export { ComunicadoAudienciaSelect } from './comunicado-audiencia-select'

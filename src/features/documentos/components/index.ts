@@ -1,0 +1,6 @@
+export { DocumentoForm } from './documento-form'
+export { DocumentoTable } from './documento-table'
+export { DocumentoDetail } from './documento-detail'
+export { DocumentoStatusBadge } from './documento-status-badge'
+export { DocumentoTypeBadge } from './documento-type-badge'
+export { DocumentoVersionTimeline } from './documento-version-timeline'
